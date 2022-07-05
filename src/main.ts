@@ -1,8 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core'
+import { NestExpressApplication } from '@nestjs/platform-express'
+import { join } from 'path'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  // 使用express
+  const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  // 开启静态资源访问
+  app.useStaticAssets(join(__dirname, '../public'), {prefix: '/static'})
+  await app.listen(3000)
 }
-bootstrap();
+bootstrap()
